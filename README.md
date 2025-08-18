@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GeoGuessr Game
+
+A single-player geography guessing game built with Next.js, TypeScript, and MapLibre GL JS. Players are shown images of famous locations around the world and must guess where they are by clicking on a world map.
+
+## Features
+
+- 🌍 **Interactive World Map**: Click anywhere on the map to make your location guess
+- 🖼️ **Beautiful Location Images**: High-quality images from Unsplash
+- 📊 **Real-time Scoring**: Points based on distance accuracy
+- 🎯 **Visual Results**: See your guess vs. actual location with connecting lines
+- 📱 **Responsive Design**: Works on desktop and mobile devices
+- 🎮 **5 Rounds per Game**: Multiple locations to test your geography skills
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS
+- **Maps**: MapLibre GL JS (free, open-source alternative to Mapbox)
+- **Map Data**: OpenStreetMap tiles
+- **Images**: Unsplash (free stock photos)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd geo-guesser
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Learn More
+### Building for Production
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How to Play
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Start the Game**: Click "Start Game" on the welcome screen
+2. **View the Location**: Look at the image and description provided
+3. **Make Your Guess**: Click anywhere on the world map to place your guess
+4. **Confirm Your Guess**: Review the coordinates and confirm your selection
+5. **See Results**: View how close your guess was to the actual location
+6. **Continue**: Play through 5 rounds to complete the game
+7. **Final Score**: See your total score and performance message
 
-## Deploy on Vercel
+## Scoring System
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Maximum Score per Round**: 5,000 points
+- **Distance Calculation**: Uses Haversine formula for accurate distance measurement
+- **Score Formula**: `maxScore * (1 - distance / 20000)`
+- **Closer guesses = Higher scores**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Game Locations
+
+The game includes 10 diverse locations:
+- Paris, France
+- Tokyo, Japan  
+- New York, USA
+- Sydney, Australia
+- Cairo, Egypt
+- London, UK
+- Rio de Janeiro, Brazil
+- Moscow, Russia
+- Cape Town, South Africa
+- Bangkok, Thailand
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── Game.tsx          # Main game logic and UI
+│   │   ├── MapComponent.tsx  # Interactive map for guessing
+│   │   └── ResultMap.tsx     # Results display with markers
+│   ├── globals.css           # Global styles
+│   ├── layout.tsx            # App layout
+│   └── page.tsx              # Main page
+```
+
+## Customization
+
+### Adding New Locations
+
+To add more locations, edit the `sampleLocations` array in `Game.tsx`:
+
+```typescript
+{
+  id: 11,
+  name: "Your City, Country",
+  latitude: 0.0000,
+  longitude: 0.0000,
+  imageUrl: "https://your-image-url.com/image.jpg",
+  description: "Your description"
+}
+```
+
+### Changing Game Settings
+
+- **Rounds**: Modify `totalRounds` in `Game.tsx`
+- **Scoring**: Adjust the scoring formula in the `handleGuess` function
+- **Map Style**: Customize map appearance in `MapComponent.tsx`
+
+## Future Enhancements
+
+- [ ] Street view integration (Mapillary API)
+- [ ] More diverse location categories
+- [ ] Multiplayer mode
+- [ ] Leaderboards
+- [ ] Custom map themes
+- [ ] Difficulty levels
+- [ ] Time limits per round
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+- [MapLibre GL JS](https://maplibre.org/) for the mapping library
+- [OpenStreetMap](https://www.openstreetmap.org/) for map data
+- [Unsplash](https://unsplash.com/) for location images
+- [Next.js](https://nextjs.org/) for the React framework
