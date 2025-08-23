@@ -151,15 +151,10 @@ export default function Game() {
                 <p className="text-sm text-gray-400">Round {round} of {totalRounds}</p>
               </div>
             </div>
-            <div className="flex items-center space-x-6">
-              <div className="text-right">
+                          <div className="text-right">
                 <p className="text-sm text-gray-400">Score</p>
                 <p className="text-xl font-bold text-green-500">{score.toLocaleString()}</p>
               </div>
-              <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
-                <span className="text-sm">🔔</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
