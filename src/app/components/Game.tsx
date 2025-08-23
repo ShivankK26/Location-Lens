@@ -89,11 +89,11 @@ export default function Game() {
   };
 
   useEffect(() => {
-    if (gameState === 'loading') {
-      startGame().catch(console.error);
-    }
-  }, [gameState]);
+    // Automatically start the game when component mounts
+    startGame().catch(console.error);
+  }, []);
 
+  // Show loading state while initializing the game
   if (gameState === 'loading') {
     return (
       <div className="min-h-screen bg-[#171717] relative overflow-hidden">
@@ -114,40 +114,12 @@ export default function Game() {
         </div>
 
         <div className="relative z-10 min-h-screen flex items-center justify-center">
-          <div className="text-center max-w-md mx-auto px-6">
-            <div className="mb-8">
-              <div className="w-16 h-16 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl">🌍</span>
-              </div>
-              <h1 className="text-4xl font-bold text-white mb-2">Location Lens</h1>
-              <p className="text-gray-400 text-lg">Test your geography skills</p>
+          <div className="text-center">
+            <div className="w-16 h-16 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <span className="text-2xl">🌍</span>
             </div>
-            
-            <div className="bg-[#1f1f1f] rounded-xl p-8 border border-gray-800">
-              <div className="mb-6">
-                <div className="flex justify-center space-x-8 text-center mb-6">
-                  <div>
-                    <div className="text-2xl font-bold text-green-500">10</div>
-                    <div className="text-sm text-gray-400">Locations</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-green-500">5</div>
-                    <div className="text-sm text-gray-400">Rounds</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-green-500">500</div>
-                    <div className="text-sm text-gray-400">Max Score</div>
-                  </div>
-                </div>
-              </div>
-              
-              <button
-                onClick={() => startGame().catch(console.error)}
-                className="w-full bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors"
-              >
-                Start Game
-              </button>
-            </div>
+            <h1 className="text-2xl font-bold text-white mb-4">Loading Game...</h1>
+            <div className="w-8 h-8 border-4 border-gray-600 border-t-green-500 rounded-full animate-spin mx-auto"></div>
           </div>
         </div>
       </div>
