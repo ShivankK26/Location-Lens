@@ -237,7 +237,11 @@ export default function Game() {
                 <div className="absolute top-4 left-4 z-10 bg-[#262626] px-3 py-2 rounded-lg border border-gray-700">
                   <p className="text-white text-sm font-medium">Click to make your guess</p>
                 </div>
-                <MapComponent onGuess={handleGuess} />
+                <MapComponent 
+                  onGuess={handleGuess} 
+                  hintLocation={currentLocation ? [currentLocation.latitude, currentLocation.longitude] : null}
+                  showHint={currentLocation?.mediaType === 'video'}
+                />
               </div>
             </div>
           </div>

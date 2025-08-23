@@ -93,7 +93,7 @@ export function convertPexelsVideoToLocation(
     longitude: locationData.longitude,
     imageUrl: pexelsVideo.image, // Thumbnail image
     videoUrl: videoFile?.link || '',
-    description: locationData.name,
+    description: "A beautiful location waiting to be discovered",
     mediaType: 'video'
   };
 }

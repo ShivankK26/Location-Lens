@@ -6,9 +6,11 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 interface MapComponentProps {
   onGuess: (coords: [number, number]) => void;
+  hintLocation?: [number, number] | null;
+  showHint?: boolean;
 }
 
-export default function MapComponent({ onGuess }: MapComponentProps) {
+export default function MapComponent({ onGuess, hintLocation, showHint = false }: MapComponentProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
@@ -39,8 +41,8 @@ export default function MapComponent({ onGuess }: MapComponentProps) {
           }
         ]
       },
-      center: [0, 0],
-      zoom: 2,
+      center: hintLocation && showHint ? [hintLocation[1] + (Math.random() - 0.5) * 20, hintLocation[0] + (Math.random() - 0.5) * 10] : [0, 0],
+      zoom: hintLocation && showHint ? 3 : 2,
       maxZoom: 18,
       minZoom: 1
     });
@@ -108,7 +110,7 @@ export default function MapComponent({ onGuess }: MapComponentProps) {
         map.current.remove();
       }
     };
-  }, [onGuess, isMapLoaded]);
+  }, [onGuess, isMapLoaded, hintLocation, showHint]);
 
   return (
     <div className="relative w-full h-full">
@@ -119,6 +121,11 @@ export default function MapComponent({ onGuess }: MapComponentProps) {
             <div className="w-12 h-12 border-4 border-gray-600 border-t-green-500 rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-gray-400">Loading map...</p>
           </div>
+        </div>
+      )}
+      {showHint && hintLocation && (
+        <div className="absolute top-4 right-4 z-10 bg-[#262626] px-3 py-2 rounded-lg border border-gray-700">
+          <p className="text-white text-sm font-medium">💡 Hint: Check this area</p>
         </div>
       )}
     </div>
