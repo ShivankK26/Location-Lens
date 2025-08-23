@@ -96,49 +96,85 @@ export default function Game() {
 
   if (gameState === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Location Lens</h1>
-          <p className="text-gray-600 mb-8">Guess the location and test your geography skills!</p>
-          <button
-            onClick={() => startGame().catch(console.error)}
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Start Game
-          </button>
+      <div className="min-h-screen bg-[#171717] flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-6">
+          <div className="mb-8">
+            <div className="w-16 h-16 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <span className="text-2xl">🌍</span>
+            </div>
+            <h1 className="text-4xl font-bold text-white mb-2">Location Lens</h1>
+            <p className="text-gray-400 text-lg">Test your geography skills</p>
+          </div>
+          
+          <div className="bg-[#1f1f1f] rounded-xl p-8 border border-gray-800">
+            <div className="mb-6">
+              <div className="flex justify-center space-x-8 text-center mb-6">
+                <div>
+                  <div className="text-2xl font-bold text-green-500">10</div>
+                  <div className="text-sm text-gray-400">Locations</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-green-500">5</div>
+                  <div className="text-sm text-gray-400">Rounds</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-green-500">25K</div>
+                  <div className="text-sm text-gray-400">Max Score</div>
+                </div>
+              </div>
+            </div>
+            
+            <button
+              onClick={() => startGame().catch(console.error)}
+              className="w-full bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+            >
+              Start Game
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#171717]">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="bg-[#1f1f1f] border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">Location Lens</h1>
-              <p className="text-sm text-gray-600">Round {round} of {totalRounds}</p>
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                <span className="text-xl">🌍</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">Location Lens</h1>
+                <p className="text-sm text-gray-400">Round {round} of {totalRounds}</p>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-lg font-semibold text-gray-800">Score: {score}</p>
+            <div className="flex items-center space-x-6">
+              <div className="text-right">
+                <p className="text-sm text-gray-400">Score</p>
+                <p className="text-xl font-bold text-green-500">{score.toLocaleString()}</p>
+              </div>
+              <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
+                <span className="text-sm">🔔</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {gameState === 'playing' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Location Image */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="relative h-96">
+            <div className="bg-[#1f1f1f] rounded-xl overflow-hidden border border-gray-800">
+              <div className="relative h-[400px]">
                 {isLoadingLocations ? (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                  <div className="w-full h-full flex items-center justify-center bg-[#262626]">
                     <div className="text-center">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                      <p className="text-gray-600">Loading location...</p>
+                      <div className="w-12 h-12 border-4 border-gray-600 border-t-green-500 rounded-full animate-spin mx-auto mb-4"></div>
+                      <p className="text-gray-400">Loading location...</p>
                     </div>
                   </div>
                 ) : currentLocation ? (
@@ -147,7 +183,7 @@ export default function Game() {
                     <img
                       src={currentLocation.imageUrl}
                       alt={currentLocation.name}
-                      className="w-full h-full object-cover absolute inset-0"
+                      className="w-full h-full object-cover"
                       loading="lazy"
                       onLoad={() => console.log('Image loaded successfully:', currentLocation.imageUrl)}
                       onError={(e) => {
@@ -155,24 +191,29 @@ export default function Game() {
                         console.error('Error details:', e);
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30 flex items-center justify-center z-10">
-                      <div className="text-center text-white">
-                        <h2 className="text-3xl font-bold mb-2 drop-shadow-lg">Where is this?</h2>
-                        <p className="text-lg opacity-90 drop-shadow-md">{currentLocation.description}</p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 flex items-center justify-center">
+                      <div className="text-center text-white p-6">
+                        <h2 className="text-3xl font-bold mb-3">Where is this?</h2>
+                        <p className="text-lg text-gray-200 max-w-md mx-auto">
+                          {currentLocation.description}
+                        </p>
                       </div>
                     </div>
                   </>
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                    <p className="text-gray-600">No location available</p>
+                  <div className="w-full h-full flex items-center justify-center bg-[#262626]">
+                    <p className="text-gray-400">No location available</p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Map for Guessing */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="h-96">
+            <div className="bg-[#1f1f1f] rounded-xl overflow-hidden border border-gray-800">
+              <div className="h-[400px] relative">
+                <div className="absolute top-4 left-4 z-10 bg-[#262626] px-3 py-2 rounded-lg border border-gray-700">
+                  <p className="text-white text-sm font-medium">Click to make your guess</p>
+                </div>
                 <MapComponent onGuess={handleGuess} />
               </div>
             </div>
@@ -182,31 +223,34 @@ export default function Game() {
         {gameState === 'result' && currentLocation && guessCoords && distance !== null && (
           <div className="space-y-6">
             {/* Results Summary */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-[#1f1f1f] rounded-xl p-6 border border-gray-800">
               <div className="text-center mb-6">
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">Round {round} Results</h2>
+                <h2 className="text-2xl font-bold text-white mb-6">Round {round} Results</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">Your Guess</p>
-                    <p className="text-xl font-semibold">
+                  <div className="bg-[#262626] p-4 rounded-lg border border-gray-700">
+                    <div className="text-2xl mb-2">🎯</div>
+                    <p className="text-gray-400 text-sm mb-1">Your Guess</p>
+                    <p className="text-white font-semibold">
                       {guessCoords[0].toFixed(4)}, {guessCoords[1].toFixed(4)}
                     </p>
                   </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">Actual Location</p>
-                    <p className="text-xl font-semibold">{currentLocation.name}</p>
+                  <div className="bg-[#262626] p-4 rounded-lg border border-gray-700">
+                    <div className="text-2xl mb-2">📍</div>
+                    <p className="text-gray-400 text-sm mb-1">Actual Location</p>
+                    <p className="text-white font-semibold">{currentLocation.name}</p>
                   </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">Distance</p>
-                    <p className="text-xl font-semibold">{distance.toFixed(1)} km</p>
+                  <div className="bg-[#262626] p-4 rounded-lg border border-gray-700">
+                    <div className="text-2xl mb-2">📏</div>
+                    <p className="text-gray-400 text-sm mb-1">Distance</p>
+                    <p className="text-white font-semibold">{distance.toFixed(1)} km</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Result Map */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="h-96">
+            <div className="bg-[#1f1f1f] rounded-xl overflow-hidden border border-gray-800">
+              <div className="h-80">
                 <ResultMap
                   guessCoords={guessCoords}
                   actualCoords={[currentLocation.latitude, currentLocation.longitude]}
@@ -219,7 +263,7 @@ export default function Game() {
             <div className="text-center">
               <button
                 onClick={nextRound}
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
               >
                 {round < totalRounds ? 'Next Round' : 'Finish Game'}
               </button>
@@ -228,17 +272,23 @@ export default function Game() {
         )}
 
         {gameState === 'finished' && (
-          <div className="bg-white rounded-lg shadow-md p-8">
+          <div className="bg-[#1f1f1f] rounded-xl p-8 border border-gray-800 max-w-2xl mx-auto">
             <div className="text-center">
-              <h2 className="text-4xl font-bold text-gray-800 mb-4">Game Complete!</h2>
               <div className="mb-8">
-                <p className="text-xl text-gray-600 mb-2">Final Score</p>
-                <p className="text-5xl font-bold text-blue-600">{score}</p>
+                <h2 className="text-3xl font-bold text-white mb-4">Game Complete!</h2>
+                <div className="w-16 h-1 bg-green-500 mx-auto rounded-full"></div>
+              </div>
+              
+              <div className="mb-8">
+                <p className="text-gray-400 mb-4">Final Score</p>
+                <div className="bg-[#262626] p-6 rounded-xl border border-gray-700 inline-block">
+                  <p className="text-4xl font-bold text-green-500">{score.toLocaleString()}</p>
+                </div>
                 <p className="text-sm text-gray-500 mt-2">out of {totalRounds * 5000} possible points</p>
               </div>
               
               <div className="mb-8">
-                <p className="text-lg text-gray-700">
+                <p className="text-lg text-gray-300">
                   Thanks for playing Location Lens!
                 </p>
               </div>
@@ -249,7 +299,7 @@ export default function Game() {
                   setScore(0);
                   setRound(1);
                 }}
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
               >
                 Play Again
               </button>
