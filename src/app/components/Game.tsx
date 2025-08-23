@@ -8,9 +8,6 @@ import { getRandomLocation, getRandomLocations, Location } from '../services/uns
 const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
 const ResultMap = dynamic(() => import('./ResultMap'), { ssr: false });
 
-// Game locations will be fetched dynamically from Unsplash API
-let gameLocations: Location[] = [];
-
 export default function Game() {
   const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
   const [gameState, setGameState] = useState<'loading' | 'playing' | 'guessing' | 'result' | 'finished'>('loading');
@@ -46,16 +43,9 @@ export default function Game() {
       setDistance(null);
     } catch (error) {
       console.error('Error loading location:', error);
-      // Fallback to a default location if API fails
-      setCurrentLocation({
-        id: "fallback-paris",
-        name: "Paris, France",
-        latitude: 48.8566,
-        longitude: 2.3522,
-        imageUrl: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&h=600&fit=crop",
-        description: "The City of Light"
-      });
-      setGameState('playing');
+      // Show error state instead of fallback
+      setCurrentLocation(null);
+      setGameState('loading');
     } finally {
       setIsLoadingLocations(false);
     }
@@ -249,10 +239,7 @@ export default function Game() {
               
               <div className="mb-8">
                 <p className="text-lg text-gray-700">
-                  {score >= totalRounds * 4000 ? "🎉 Excellent! You're a geography master!" :
-                   score >= totalRounds * 3000 ? "👍 Great job! You know your world!" :
-                   score >= totalRounds * 2000 ? "😊 Good effort! Keep exploring!" :
-                   "🌍 Keep practicing! The world is waiting to be discovered!"}
+                  Thanks for playing Location Lens!
                 </p>
               </div>
 

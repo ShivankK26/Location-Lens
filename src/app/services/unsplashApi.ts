@@ -34,7 +34,7 @@ export interface Location {
   description: string;
 }
 
-// Sample locations with search terms for Unsplash
+// Dynamic location search terms - can be expanded by users
 const locationSearchTerms = [
   { name: "Paris, France", search: "paris france eiffel tower", latitude: 48.8566, longitude: 2.3522 },
   { name: "Tokyo, Japan", search: "tokyo japan cityscape", latitude: 35.6762, longitude: 139.6503 },
@@ -51,9 +51,7 @@ const locationSearchTerms = [
 // Fetch a random photo for a specific location
 export async function fetchLocationPhoto(searchTerm: string): Promise<UnsplashPhoto | null> {
   if (!UNSPLASH_ACCESS_KEY) {
-    console.warn('Unsplash API key not found. Using fallback images.');
-    console.log('To enable real-time photos, set NEXT_PUBLIC_UNSPLASH_ACCESS_KEY in your .env.local file');
-    return null;
+    throw new Error('Unsplash API key not found. Please set NEXT_PUBLIC_UNSPLASH_ACCESS_KEY in your .env.local file');
   }
 
   try {
@@ -79,10 +77,10 @@ export async function fetchLocationPhoto(searchTerm: string): Promise<UnsplashPh
       return data.results[randomIndex];
     }
 
-    return null;
+    throw new Error(`No photos found for search term: ${searchTerm}`);
   } catch (error) {
     console.error('Error fetching photo from Unsplash:', error);
-    return null;
+    throw error;
   }
 }
 
@@ -107,34 +105,11 @@ export async function getRandomLocation(): Promise<Location> {
   
   const unsplashPhoto = await fetchLocationPhoto(randomLocationData.search);
   
-  if (unsplashPhoto) {
-    return convertUnsplashPhotoToLocation(unsplashPhoto, randomLocationData);
+  if (!unsplashPhoto) {
+    throw new Error(`Failed to fetch photo for ${randomLocationData.name}`);
   }
   
-  // Fallback to working default images if API fails
-  const fallbackImages = [
-    "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1520106212299-d99c43e79618?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1508009603885-50cf7c079365?w=800&h=600&fit=crop"
-  ];
-  
-  const randomFallbackIndex = Math.floor(Math.random() * fallbackImages.length);
-  
-  return {
-    id: `fallback-${Math.floor(Math.random() * 1000)}`,
-    name: randomLocationData.name,
-    latitude: randomLocationData.latitude,
-    longitude: randomLocationData.longitude,
-    imageUrl: fallbackImages[randomFallbackIndex],
-    description: randomLocationData.name
-  };
+  return convertUnsplashPhotoToLocation(unsplashPhoto, randomLocationData);
 }
 
 // Get multiple random locations for the game
@@ -153,34 +128,11 @@ export async function getRandomLocations(count: number = 5): Promise<Location[]>
     
     const unsplashPhoto = await fetchLocationPhoto(locationData.search);
     
-    if (unsplashPhoto) {
-      locations.push(convertUnsplashPhotoToLocation(unsplashPhoto, locationData));
-    } else {
-      // Fallback to working default images
-      const fallbackImages = [
-        "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1520106212299-d99c43e79618?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1508009603885-50cf7c079365?w=800&h=600&fit=crop"
-      ];
-      
-      const randomFallbackIndex = Math.floor(Math.random() * fallbackImages.length);
-      
-      locations.push({
-        id: `fallback-${Math.floor(Math.random() * 1000)}`,
-        name: locationData.name,
-        latitude: locationData.latitude,
-        longitude: locationData.longitude,
-        imageUrl: fallbackImages[randomFallbackIndex],
-        description: locationData.name
-      });
+    if (!unsplashPhoto) {
+      throw new Error(`Failed to fetch photo for ${locationData.name}`);
     }
+    
+    locations.push(convertUnsplashPhotoToLocation(unsplashPhoto, locationData));
   }
 
   return locations;

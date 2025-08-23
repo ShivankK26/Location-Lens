@@ -10,6 +10,7 @@ A single-player geography guessing game built with Next.js, TypeScript, and MapL
 - 🎯 **Visual Results**: See your guess vs. actual location with connecting lines
 - 📱 **Responsive Design**: Works on desktop and mobile devices
 - 🎮 **5 Rounds per Game**: Multiple locations to test your geography skills
+- 🚫 **No Hardcoded Data**: Pure API-driven experience with no fallback content
 
 ## Tech Stack
 
@@ -25,7 +26,7 @@ A single-player geography guessing game built with Next.js, TypeScript, and MapL
 
 - Node.js 18+ 
 - npm or yarn
-- Unsplash API key (see [UNSPLASH_SETUP.md](UNSPLASH_SETUP.md))
+- **Unsplash API key** (required - no fallback data available)
 
 ### Installation
 
@@ -41,8 +42,8 @@ npm install
 ```
 
 3. Set up Unsplash API:
-   - Follow the instructions in [UNSPLASH_SETUP.md](UNSPLASH_SETUP.md)
-   - Create a `.env.local` file with your API key
+   - Get your free API key from [Unsplash Developers](https://unsplash.com/developers)
+   - Create a `.env.local` file with: `NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=your_api_key_here`
 
 4. Run the development server:
 ```bash
@@ -77,19 +78,9 @@ npm start
 
 ## Game Locations
 
-The game dynamically fetches real-time photos for 10 diverse locations:
-- Paris, France (Eiffel Tower)
-- Tokyo, Japan (Cityscape)
-- New York, USA (Skyline)
-- Sydney, Australia (Opera House)
-- Cairo, Egypt (Pyramids)
-- London, UK (Big Ben)
-- Rio de Janeiro, Brazil (Christ the Redeemer)
-- Moscow, Russia (Red Square)
-- Cape Town, South Africa (Table Mountain)
-- Bangkok, Thailand (Temples)
+The game dynamically fetches real-time photos from Unsplash API. The location list is configurable and can be easily expanded by adding new entries to the `locationSearchTerms` array in `src/app/services/unsplashApi.ts`.
 
-Each location uses specific search terms to fetch relevant, high-quality images from Unsplash.
+**No hardcoded or fallback data** - the game requires a valid Unsplash API key to function and will show appropriate error messages if the API is unavailable.
 
 ## Project Structure
 
