@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import { UserButton } from '@clerk/nextjs';
 import { getRandomLocation, getRandomLocations, Location } from '../services/unsplashApi';
 
 // Dynamically import the map components to avoid SSR issues
@@ -232,6 +233,7 @@ export default function Game() {
                     </div>
                   )}
                 </div>
+                <UserButton afterSignOutUrl="/" />
               </div>
             </div>
           </div>
