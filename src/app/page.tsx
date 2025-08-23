@@ -24,37 +24,37 @@ export default function Home() {
 
         {/* Floating Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-green-500/10 rounded-full blur-xl animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-blue-500/10 rounded-full blur-xl animate-pulse animation-delay-1000"></div>
-          <div className="absolute bottom-40 left-20 w-20 h-20 bg-green-500/10 rounded-full blur-xl animate-pulse animation-delay-2000"></div>
+          <div className="absolute top-8 sm:top-20 left-4 sm:left-10 w-20 h-20 sm:w-32 sm:h-32 bg-green-500/10 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute top-16 sm:top-40 right-4 sm:right-20 w-16 h-16 sm:w-24 sm:h-24 bg-blue-500/10 rounded-full blur-xl animate-pulse animation-delay-1000"></div>
+          <div className="absolute bottom-16 sm:bottom-40 left-4 sm:left-20 w-16 h-16 sm:w-20 sm:h-20 bg-green-500/10 rounded-full blur-xl animate-pulse animation-delay-2000"></div>
         </div>
 
-        <div className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6">
+        <div className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 py-8">
           <div className="w-full max-w-lg mx-auto">
             {/* Hero Section */}
-            <div className="text-center mb-8 sm:mb-12 animate-fade-in">
-              <div className="relative inline-block mb-6 sm:mb-8 group animate-scale-in">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300 group-hover:shadow-green-500/25 animate-float">
-                  <span className="text-2xl sm:text-3xl">🌍</span>
+            <div className="text-center mb-6 sm:mb-8 animate-fade-in">
+              <div className="relative inline-block mb-4 sm:mb-6 group animate-scale-in">
+                <div className="w-14 h-14 sm:w-18 sm:h-18 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300 group-hover:shadow-green-500/25 animate-float">
+                  <span className="text-xl sm:text-2xl">🌍</span>
                 </div>
                 <div className="absolute -inset-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
               </div>
               
-              <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3 sm:mb-4 tracking-tight animate-slide-up animation-delay-200">
+              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 sm:mb-3 tracking-tight animate-slide-up animation-delay-200">
                 Location Lens
               </h1>
               
-              <p className="text-lg sm:text-xl text-gray-300 mb-2 sm:mb-3 font-medium animate-slide-up animation-delay-400">
+              <p className="text-base sm:text-lg text-gray-300 mb-2 font-medium animate-slide-up animation-delay-400">
                 Discover the world through stunning visuals
               </p>
               
-              <p className="text-base sm:text-lg text-gray-400 leading-relaxed animate-slide-up animation-delay-600">
+              <p className="text-sm sm:text-base text-gray-400 leading-relaxed animate-slide-up animation-delay-600">
                 Test your geography skills with real-time videos from around the globe.
               </p>
             </div>
 
             {/* Stats Section */}
-            <div className="flex justify-center mb-8 sm:mb-10 space-x-8 sm:space-x-12 animate-fade-in animation-delay-800">
+            <div className="flex justify-center mb-6 sm:mb-8 space-x-6 sm:space-x-8 animate-fade-in animation-delay-800">
               <div className="text-center group">
                 <div className="text-2xl sm:text-3xl font-bold text-white group-hover:text-green-400 transition-colors duration-300">1000+</div>
                 <div className="text-xs sm:text-sm text-gray-400 font-medium">Locations</div>
@@ -70,10 +70,10 @@ export default function Home() {
             </div>
 
             {/* Sign In Card */}
-            <div className="bg-[#1f1f1f] rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-gray-800/50 shadow-2xl backdrop-blur-sm animate-scale-in animation-delay-1000 hover-lift">
-              <div className="text-center mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">Ready to Explore?</h2>
-                <p className="text-gray-300 text-base sm:text-lg">Join thousands of geography enthusiasts worldwide</p>
+            <div className="bg-[#1f1f1f] rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-800/50 shadow-2xl backdrop-blur-sm animate-scale-in animation-delay-1000 hover-lift">
+              <div className="text-center mb-4 sm:mb-6">
+                <h2 className="text-lg sm:text-xl font-bold text-white mb-2">Ready to Explore?</h2>
+                <p className="text-gray-300 text-sm sm:text-base">Join thousands of geography enthusiasts worldwide</p>
               </div>
               
               <div className="w-full flex justify-center">
@@ -116,8 +116,8 @@ export default function Home() {
                 />
               </div>
               
-              <div className="mt-6 sm:mt-8 text-center">
-                <p className="text-xs sm:text-sm text-gray-400">
+              <div className="mt-4 sm:mt-6 text-center">
+                <p className="text-xs text-gray-400">
                   By continuing, you agree to our Terms of Service & Privacy Policy
                 </p>
               </div>
@@ -147,37 +147,37 @@ export default function Home() {
 
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-green-500/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-blue-500/10 rounded-full blur-xl animate-pulse animation-delay-1000"></div>
-        <div className="absolute bottom-40 left-20 w-20 h-20 bg-green-500/10 rounded-full blur-xl animate-pulse animation-delay-2000"></div>
+        <div className="absolute top-8 sm:top-20 left-4 sm:left-10 w-20 h-20 sm:w-32 sm:h-32 bg-green-500/10 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-16 sm:top-40 right-4 sm:right-20 w-16 h-16 sm:w-24 sm:h-24 bg-blue-500/10 rounded-full blur-xl animate-pulse animation-delay-1000"></div>
+        <div className="absolute bottom-16 sm:bottom-40 left-4 sm:left-20 w-16 h-16 sm:w-20 sm:h-20 bg-green-500/10 rounded-full blur-xl animate-pulse animation-delay-2000"></div>
       </div>
 
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6">
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 py-8">
         <div className="w-full max-w-lg mx-auto">
           {/* Welcome Section */}
-          <div className="text-center mb-8 sm:mb-12 animate-fade-in">
-            <div className="relative inline-block mb-6 sm:mb-8 group animate-scale-in">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300 group-hover:shadow-green-500/25 animate-float">
-                <span className="text-2xl sm:text-3xl">🌍</span>
+          <div className="text-center mb-6 sm:mb-8 animate-fade-in">
+            <div className="relative inline-block mb-4 sm:mb-6 group animate-scale-in">
+              <div className="w-14 h-14 sm:w-18 sm:h-18 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300 group-hover:shadow-green-500/25 animate-float">
+                <span className="text-xl sm:text-2xl">🌍</span>
               </div>
               <div className="absolute -inset-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
             </div>
             
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3 sm:mb-4 tracking-tight animate-slide-up animation-delay-200">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 sm:mb-3 tracking-tight animate-slide-up animation-delay-200">
               Welcome to Location Lens!
             </h1>
             
-            <p className="text-lg sm:text-xl text-gray-300 mb-2 sm:mb-3 font-medium animate-slide-up animation-delay-400">
+            <p className="text-base sm:text-lg text-gray-300 mb-2 font-medium animate-slide-up animation-delay-400">
               Ready to test your geography skills?
             </p>
             
-            <p className="text-base sm:text-lg text-gray-400 leading-relaxed animate-slide-up animation-delay-600">
+            <p className="text-sm sm:text-base text-gray-400 leading-relaxed animate-slide-up animation-delay-600">
               Explore the world through stunning real-time videos and images.
             </p>
           </div>
 
           {/* Game Stats */}
-          <div className="flex justify-center mb-8 sm:mb-10 space-x-8 sm:space-x-12 animate-fade-in animation-delay-800">
+          <div className="flex justify-center mb-6 sm:mb-8 space-x-6 sm:space-x-8 animate-fade-in animation-delay-800">
             <div className="text-center group">
               <div className="text-2xl sm:text-3xl font-bold text-white group-hover:text-green-400 transition-colors duration-300">10</div>
               <div className="text-xs sm:text-sm text-gray-400 font-medium">Locations</div>
@@ -193,10 +193,10 @@ export default function Home() {
           </div>
 
           {/* Start Game Card */}
-          <div className="bg-[#1f1f1f] rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-gray-800/50 shadow-2xl backdrop-blur-sm animate-scale-in animation-delay-1000 hover-lift">
-            <div className="text-center mb-6 sm:mb-8">
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">Start Your Adventure</h2>
-              <p className="text-gray-300 text-base sm:text-lg">Click below to begin your geography journey</p>
+          <div className="bg-[#1f1f1f] rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-800/50 shadow-2xl backdrop-blur-sm animate-scale-in animation-delay-1000 hover-lift">
+            <div className="text-center mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-white mb-2">Start Your Adventure</h2>
+              <p className="text-gray-300 text-sm sm:text-base">Click below to begin your geography journey</p>
             </div>
             
             <button
@@ -208,8 +208,8 @@ export default function Home() {
               Start Game
             </button>
             
-            <div className="mt-6 sm:mt-8 text-center">
-              <p className="text-xs sm:text-sm text-gray-400">
+            <div className="mt-4 sm:mt-6 text-center">
+              <p className="text-xs text-gray-400">
                 Challenge yourself with locations from around the world
               </p>
             </div>
