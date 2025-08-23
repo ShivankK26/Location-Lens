@@ -164,12 +164,12 @@ export default function Game() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-8">
         {gameState === 'playing' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-8">
             {/* Location Image */}
             <div className="bg-[#1f1f1f] rounded-xl overflow-hidden border border-gray-800">
-              <div className="relative h-[400px]">
+              <div className="relative h-[500px]">
                 {isLoadingLocations ? (
                   <div className="w-full h-full flex items-center justify-center bg-[#262626]">
                     <div className="text-center">
@@ -179,24 +179,47 @@ export default function Game() {
                   </div>
                 ) : currentLocation ? (
                   <>
-                    {console.log('Rendering image with URL:', currentLocation.imageUrl)}
-                    <img
-                      src={currentLocation.imageUrl}
-                      alt={currentLocation.name}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      onLoad={() => console.log('Image loaded successfully:', currentLocation.imageUrl)}
-                      onError={(e) => {
-                        console.error('Image failed to load:', currentLocation.imageUrl);
-                        console.error('Error details:', e);
-                      }}
-                    />
+                    {console.log('Rendering media with URL:', currentLocation.imageUrl)}
+                    {currentLocation.mediaType === 'video' && currentLocation.videoUrl ? (
+                      <video
+                        src={currentLocation.videoUrl}
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        onLoadStart={() => console.log('Video loading started:', currentLocation.videoUrl)}
+                        onCanPlay={() => console.log('Video loaded successfully:', currentLocation.videoUrl)}
+                        onError={(e) => {
+                          console.error('Video failed to load:', currentLocation.videoUrl);
+                          console.error('Error details:', e);
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={currentLocation.imageUrl}
+                        alt={currentLocation.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        onLoad={() => console.log('Image loaded successfully:', currentLocation.imageUrl)}
+                        onError={(e) => {
+                          console.error('Image failed to load:', currentLocation.imageUrl);
+                          console.error('Error details:', e);
+                        }}
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 flex items-center justify-center">
                       <div className="text-center text-white p-6">
                         <h2 className="text-3xl font-bold mb-3">Where is this?</h2>
                         <p className="text-lg text-gray-200 max-w-md mx-auto">
                           {currentLocation.description}
                         </p>
+                        {currentLocation.mediaType === 'video' && (
+                          <div className="mt-4 flex items-center justify-center space-x-2">
+                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                            <span className="text-sm text-gray-300">Video playing</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </>
@@ -210,7 +233,7 @@ export default function Game() {
 
             {/* Map for Guessing */}
             <div className="bg-[#1f1f1f] rounded-xl overflow-hidden border border-gray-800">
-              <div className="h-[400px] relative">
+              <div className="h-[500px] relative">
                 <div className="absolute top-4 left-4 z-10 bg-[#262626] px-3 py-2 rounded-lg border border-gray-700">
                   <p className="text-white text-sm font-medium">Click to make your guess</p>
                 </div>

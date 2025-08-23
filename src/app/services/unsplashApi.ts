@@ -1,4 +1,6 @@
 // Unsplash API service for fetching real-time photos
+import { getRandomVideoLocation, VideoLocation } from './pexelsApi';
+
 const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
 const UNSPLASH_API_BASE = 'https://api.unsplash.com';
 
@@ -31,10 +33,13 @@ export interface Location {
   latitude: number;
   longitude: number;
   imageUrl: string;
+  videoUrl?: string;
   description: string;
+  mediaType: 'image' | 'video';
 }
 
 // Dynamic location search terms - can be expanded by users
+// TODO: Could be moved to external config file or environment variables for easier customization
 const locationSearchTerms = [
   { name: "Paris, France", search: "paris france eiffel tower", latitude: 48.8566, longitude: 2.3522 },
   { name: "Tokyo, Japan", search: "tokyo japan cityscape", latitude: 35.6762, longitude: 139.6503 },
@@ -95,18 +100,27 @@ export function convertUnsplashPhotoToLocation(
     latitude: locationData.latitude,
     longitude: locationData.longitude,
     imageUrl: unsplashPhoto.urls.regular,
-    description: unsplashPhoto.alt_description || locationData.name
+    description: unsplashPhoto.alt_description || locationData.name,
+    mediaType: 'image'
   };
 }
 
-// Get a random location with a real photo
+// Get a random location with photo or video
 export async function getRandomLocation(): Promise<Location> {
   const randomLocationData = locationSearchTerms[Math.floor(Math.random() * locationSearchTerms.length)];
   
+  // Try to get a video first (more engaging)
+  const videoLocation = await getRandomVideoLocation(randomLocationData);
+  
+  if (videoLocation) {
+    return videoLocation;
+  }
+  
+  // Fallback to photo if video is not available
   const unsplashPhoto = await fetchLocationPhoto(randomLocationData.search);
   
   if (!unsplashPhoto) {
-    throw new Error(`Failed to fetch photo for ${randomLocationData.name}`);
+    throw new Error(`Failed to fetch media for ${randomLocationData.name}`);
   }
   
   return convertUnsplashPhotoToLocation(unsplashPhoto, randomLocationData);
@@ -126,13 +140,20 @@ export async function getRandomLocations(count: number = 5): Promise<Location[]>
     usedIndices.add(randomIndex);
     const locationData = locationSearchTerms[randomIndex];
     
-    const unsplashPhoto = await fetchLocationPhoto(locationData.search);
+    // Try video first, then photo
+    const videoLocation = await getRandomVideoLocation(locationData);
     
-    if (!unsplashPhoto) {
-      throw new Error(`Failed to fetch photo for ${locationData.name}`);
+    if (videoLocation) {
+      locations.push(videoLocation);
+    } else {
+      const unsplashPhoto = await fetchLocationPhoto(locationData.search);
+      
+      if (!unsplashPhoto) {
+        throw new Error(`Failed to fetch media for ${locationData.name}`);
+      }
+      
+      locations.push(convertUnsplashPhotoToLocation(unsplashPhoto, locationData));
     }
-    
-    locations.push(convertUnsplashPhotoToLocation(unsplashPhoto, locationData));
   }
 
   return locations;
