@@ -17,6 +17,7 @@ export default function Game() {
   const [guessCoords, setGuessCoords] = useState<[number, number] | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
   const [isLoadingLocations, setIsLoadingLocations] = useState(false);
+  const [showScoringDropdown, setShowScoringDropdown] = useState(false);
 
   // Calculate distance between two points using Haversine formula
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
@@ -65,7 +66,7 @@ export default function Game() {
     setGameState('result');
     
     // Calculate score based on distance (closer = higher score)
-    const maxScore = 5000;
+    const maxScore = 100;
     const scoreEarned = Math.max(0, Math.round(maxScore * (1 - calculatedDistance / 20000)));
     setScore(prev => prev + scoreEarned);
   };
@@ -134,7 +135,7 @@ export default function Game() {
                     <div className="text-sm text-gray-400">Rounds</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-green-500">25K</div>
+                    <div className="text-2xl font-bold text-green-500">500</div>
                     <div className="text-sm text-gray-400">Max Score</div>
                   </div>
                 </div>
@@ -185,9 +186,80 @@ export default function Game() {
                   <p className="text-sm text-gray-400">Round {round} of {totalRounds}</p>
                 </div>
               </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-400">Score</p>
-                <p className="text-xl font-bold text-green-500">{score.toLocaleString()}</p>
+              <div className="flex items-center space-x-4">
+                <div className="text-right">
+                  <p className="text-sm text-gray-400">Score</p>
+                  <p className="text-xl font-bold text-green-500">{score.toLocaleString()}</p>
+                </div>
+                <div className="relative">
+                  <button
+                    onClick={() => setShowScoringDropdown(!showScoringDropdown)}
+                    className="flex items-center space-x-2 bg-[#262626] hover:bg-[#333333] text-gray-300 hover:text-white px-3 py-2 rounded-lg transition-colors duration-200"
+                  >
+                    <span className="text-sm font-medium">🏆 Scoring</span>
+                    <svg 
+                      className={`w-4 h-4 transition-transform duration-200 ${showScoringDropdown ? 'rotate-180' : ''}`} 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  
+                  {showScoringDropdown && (
+                    <div className="absolute right-0 top-full mt-2 w-80 bg-[#1f1f1f] border border-gray-700 rounded-xl shadow-2xl z-50">
+                      <div className="p-4">
+                        <h3 className="text-lg font-bold text-white mb-3 flex items-center">
+                          <span className="mr-2">🏆</span>
+                          Scoring Breakdown
+                        </h3>
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                              <span className="text-gray-300">Perfect Guess</span>
+                            </div>
+                            <span className="text-green-400 font-semibold">100 pts</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                              <span className="text-gray-300">Close Guess (≤1,000 km)</span>
+                            </div>
+                            <span className="text-blue-400 font-semibold">95 pts</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                              <span className="text-gray-300">Medium Guess (≤5,000 km)</span>
+                            </div>
+                            <span className="text-yellow-400 font-semibold">75 pts</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                              <span className="text-gray-300">Far Guess (≤10,000 km)</span>
+                            </div>
+                            <span className="text-orange-400 font-semibold">50 pts</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                              <span className="text-gray-300">Very Far Guess (&gt;10,000 km)</span>
+                            </div>
+                            <span className="text-red-400 font-semibold">0 pts</span>
+                          </div>
+                        </div>
+                        <div className="mt-4 pt-3 border-t border-gray-700">
+                          <p className="text-xs text-gray-400 text-center">
+                            Max Score: 500 points (5 rounds × 100 pts each)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

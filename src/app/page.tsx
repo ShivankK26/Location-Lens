@@ -187,7 +187,7 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-medium">Rounds</div>
             </div>
             <div className="text-center group">
-              <div className="text-2xl sm:text-3xl font-bold text-white group-hover:text-green-400 transition-colors duration-300">25K</div>
+              <div className="text-2xl sm:text-3xl font-bold text-white group-hover:text-green-400 transition-colors duration-300">500</div>
               <div className="text-xs sm:text-sm text-gray-400 font-medium">Max Score</div>
             </div>
           </div>
