@@ -1,11 +1,11 @@
-# GeoGuessr Game
+# Location Lens
 
-A single-player geography guessing game built with Next.js, TypeScript, and MapLibre GL JS. Players are shown images of famous locations around the world and must guess where they are by clicking on a world map.
+A single-player geography guessing game built with Next.js, TypeScript, and MapLibre GL JS. Players are shown real-time images of famous locations around the world from Unsplash and must guess where they are by clicking on a world map.
 
 ## Features
 
 - 🌍 **Interactive World Map**: Click anywhere on the map to make your location guess
-- 🖼️ **Beautiful Location Images**: High-quality images from Unsplash
+- 🖼️ **Real-time Location Images**: Dynamic high-quality images from Unsplash API
 - 📊 **Real-time Scoring**: Points based on distance accuracy
 - 🎯 **Visual Results**: See your guess vs. actual location with connecting lines
 - 📱 **Responsive Design**: Works on desktop and mobile devices
@@ -25,13 +25,14 @@ A single-player geography guessing game built with Next.js, TypeScript, and MapL
 
 - Node.js 18+ 
 - npm or yarn
+- Unsplash API key (see [UNSPLASH_SETUP.md](UNSPLASH_SETUP.md))
 
 ### Installation
 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd geo-guesser
+cd location-lens
 ```
 
 2. Install dependencies:
@@ -39,12 +40,16 @@ cd geo-guesser
 npm install
 ```
 
-3. Run the development server:
+3. Set up Unsplash API:
+   - Follow the instructions in [UNSPLASH_SETUP.md](UNSPLASH_SETUP.md)
+   - Create a `.env.local` file with your API key
+
+4. Run the development server:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ### Building for Production
 
@@ -72,17 +77,19 @@ npm start
 
 ## Game Locations
 
-The game includes 10 diverse locations:
-- Paris, France
-- Tokyo, Japan  
-- New York, USA
-- Sydney, Australia
-- Cairo, Egypt
-- London, UK
-- Rio de Janeiro, Brazil
-- Moscow, Russia
-- Cape Town, South Africa
-- Bangkok, Thailand
+The game dynamically fetches real-time photos for 10 diverse locations:
+- Paris, France (Eiffel Tower)
+- Tokyo, Japan (Cityscape)
+- New York, USA (Skyline)
+- Sydney, Australia (Opera House)
+- Cairo, Egypt (Pyramids)
+- London, UK (Big Ben)
+- Rio de Janeiro, Brazil (Christ the Redeemer)
+- Moscow, Russia (Red Square)
+- Cape Town, South Africa (Table Mountain)
+- Bangkok, Thailand (Temples)
+
+Each location uses specific search terms to fetch relevant, high-quality images from Unsplash.
 
 ## Project Structure
 
@@ -93,6 +100,8 @@ src/
 │   │   ├── Game.tsx          # Main game logic and UI
 │   │   ├── MapComponent.tsx  # Interactive map for guessing
 │   │   └── ResultMap.tsx     # Results display with markers
+│   ├── services/
+│   │   └── unsplashApi.ts    # Unsplash API integration
 │   ├── globals.css           # Global styles
 │   ├── layout.tsx            # App layout
 │   └── page.tsx              # Main page
@@ -102,18 +111,18 @@ src/
 
 ### Adding New Locations
 
-To add more locations, edit the `sampleLocations` array in `Game.tsx`:
+To add more locations, edit the `locationSearchTerms` array in `src/app/services/unsplashApi.ts`:
 
 ```typescript
 {
-  id: 11,
   name: "Your City, Country",
+  search: "your city country landmark",
   latitude: 0.0000,
-  longitude: 0.0000,
-  imageUrl: "https://your-image-url.com/image.jpg",
-  description: "Your description"
+  longitude: 0.0000
 }
 ```
+
+The search term should be descriptive to get relevant images from Unsplash.
 
 ### Changing Game Settings
 

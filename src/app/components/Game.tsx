@@ -2,103 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import { getRandomLocation, getRandomLocations, Location } from '../services/unsplashApi';
 
 // Dynamically import the map components to avoid SSR issues
 const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
 const ResultMap = dynamic(() => import('./ResultMap'), { ssr: false });
 
-interface Location {
-  id: number;
-  name: string;
-  latitude: number;
-  longitude: number;
-  imageUrl: string;
-  description: string;
-}
-
-// Sample locations - in a real app, you'd fetch these from an API
-const sampleLocations: Location[] = [
-  {
-    id: 1,
-    name: "Paris, France",
-    latitude: 48.8566,
-    longitude: 2.3522,
-    imageUrl: "https://images.unsplash.com/photo-1502602898535-0b1c3b0b0b0b?w=800&h=600&fit=crop",
-    description: "The City of Light"
-  },
-  {
-    id: 2,
-    name: "Tokyo, Japan",
-    latitude: 35.6762,
-    longitude: 139.6503,
-    imageUrl: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&h=600&fit=crop",
-    description: "A bustling metropolis"
-  },
-  {
-    id: 3,
-    name: "New York, USA",
-    latitude: 40.7128,
-    longitude: -74.0060,
-    imageUrl: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&h=600&fit=crop",
-    description: "The Big Apple"
-  },
-  {
-    id: 4,
-    name: "Sydney, Australia",
-    latitude: -33.8688,
-    longitude: 151.2093,
-    imageUrl: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=600&fit=crop",
-    description: "Harbor city"
-  },
-  {
-    id: 5,
-    name: "Cairo, Egypt",
-    latitude: 30.0444,
-    longitude: 31.2357,
-    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-    description: "Ancient wonders"
-  },
-  {
-    id: 6,
-    name: "London, UK",
-    latitude: 51.5074,
-    longitude: -0.1278,
-    imageUrl: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=600&fit=crop",
-    description: "Historic capital"
-  },
-  {
-    id: 7,
-    name: "Rio de Janeiro, Brazil",
-    latitude: -22.9068,
-    longitude: -43.1729,
-    imageUrl: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=800&h=600&fit=crop",
-    description: "Carnival city"
-  },
-  {
-    id: 8,
-    name: "Moscow, Russia",
-    latitude: 55.7558,
-    longitude: 37.6176,
-    imageUrl: "https://images.unsplash.com/photo-1520106212299-d99c43e79618?w=800&h=600&fit=crop",
-    description: "Red Square"
-  },
-  {
-    id: 9,
-    name: "Cape Town, South Africa",
-    latitude: -33.9249,
-    longitude: 18.4241,
-    imageUrl: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&h=600&fit=crop",
-    description: "Table Mountain"
-  },
-  {
-    id: 10,
-    name: "Bangkok, Thailand",
-    latitude: 13.7563,
-    longitude: 100.5018,
-    imageUrl: "https://images.unsplash.com/photo-1508009603885-50cf7c079365?w=800&h=600&fit=crop",
-    description: "Temple city"
-  }
-];
+// Game locations will be fetched dynamically from Unsplash API
+let gameLocations: Location[] = [];
 
 export default function Game() {
   const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
@@ -108,6 +19,7 @@ export default function Game() {
   const [totalRounds] = useState(5);
   const [guessCoords, setGuessCoords] = useState<[number, number] | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
+  const [isLoadingLocations, setIsLoadingLocations] = useState(false);
 
   // Calculate distance between two points using Haversine formula
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
@@ -123,12 +35,30 @@ export default function Game() {
   };
 
   // Start a new round
-  const startNewRound = () => {
-    const randomLocation = sampleLocations[Math.floor(Math.random() * sampleLocations.length)];
-    setCurrentLocation(randomLocation);
-    setGameState('playing');
-    setGuessCoords(null);
-    setDistance(null);
+  const startNewRound = async () => {
+    setIsLoadingLocations(true);
+    try {
+      const randomLocation = await getRandomLocation();
+      console.log('Loaded location:', randomLocation);
+      setCurrentLocation(randomLocation);
+      setGameState('playing');
+      setGuessCoords(null);
+      setDistance(null);
+    } catch (error) {
+      console.error('Error loading location:', error);
+      // Fallback to a default location if API fails
+      setCurrentLocation({
+        id: "fallback-paris",
+        name: "Paris, France",
+        latitude: 48.8566,
+        longitude: 2.3522,
+        imageUrl: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&h=600&fit=crop",
+        description: "The City of Light"
+      });
+      setGameState('playing');
+    } finally {
+      setIsLoadingLocations(false);
+    }
   };
 
   // Handle guess submission
@@ -152,25 +82,25 @@ export default function Game() {
   };
 
   // Move to next round
-  const nextRound = () => {
+  const nextRound = async () => {
     if (round < totalRounds) {
       setRound(prev => prev + 1);
-      startNewRound();
+      await startNewRound();
     } else {
       setGameState('finished');
     }
   };
 
   // Start the game
-  const startGame = () => {
+  const startGame = async () => {
     setScore(0);
     setRound(1);
-    startNewRound();
+    await startNewRound();
   };
 
   useEffect(() => {
     if (gameState === 'loading') {
-      startGame();
+      startGame().catch(console.error);
     }
   }, [gameState]);
 
@@ -178,10 +108,10 @@ export default function Game() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">GeoGuessr</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Location Lens</h1>
           <p className="text-gray-600 mb-8">Guess the location and test your geography skills!</p>
           <button
-            onClick={startGame}
+            onClick={() => startGame().catch(console.error)}
             className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Start Game
@@ -198,7 +128,7 @@ export default function Game() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">GeoGuessr</h1>
+              <h1 className="text-2xl font-bold text-gray-800">Location Lens</h1>
               <p className="text-sm text-gray-600">Round {round} of {totalRounds}</p>
             </div>
             <div className="text-right">
@@ -209,23 +139,44 @@ export default function Game() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {gameState === 'playing' && currentLocation && (
+        {gameState === 'playing' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Location Image */}
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="relative h-96">
-                <img
-                  src={currentLocation.imageUrl}
-                  alt={currentLocation.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-                  <div className="text-center text-white">
-                    <h2 className="text-3xl font-bold mb-2">Where is this?</h2>
-                    <p className="text-lg opacity-90">{currentLocation.description}</p>
+                {isLoadingLocations ? (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                      <p className="text-gray-600">Loading location...</p>
+                    </div>
                   </div>
-                </div>
+                ) : currentLocation ? (
+                  <>
+                    {console.log('Rendering image with URL:', currentLocation.imageUrl)}
+                    <img
+                      src={currentLocation.imageUrl}
+                      alt={currentLocation.name}
+                      className="w-full h-full object-cover absolute inset-0"
+                      loading="lazy"
+                      onLoad={() => console.log('Image loaded successfully:', currentLocation.imageUrl)}
+                      onError={(e) => {
+                        console.error('Image failed to load:', currentLocation.imageUrl);
+                        console.error('Error details:', e);
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30 flex items-center justify-center z-10">
+                      <div className="text-center text-white">
+                        <h2 className="text-3xl font-bold mb-2 drop-shadow-lg">Where is this?</h2>
+                        <p className="text-lg opacity-90 drop-shadow-md">{currentLocation.description}</p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                    <p className="text-gray-600">No location available</p>
+                  </div>
+                )}
               </div>
             </div>
 
