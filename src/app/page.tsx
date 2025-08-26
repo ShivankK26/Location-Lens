@@ -3,7 +3,6 @@
 import Game from './components/Game';
 import { UserButton } from '@clerk/nextjs';
 import { useAuth } from '@clerk/nextjs';
-import { SignIn } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -76,44 +75,20 @@ export default function Home() {
                 <p className="text-gray-300 text-sm sm:text-base">Join thousands of geography enthusiasts worldwide</p>
               </div>
               
-              <div className="w-full flex justify-center">
-                <SignIn 
-                  redirectUrl="/"
-                  appearance={{
-                    baseTheme: undefined,
-                    elements: {
-                      rootBox: "w-full max-w-sm mx-auto",
-                      card: "bg-transparent shadow-none border-none p-0 m-0 w-full",
-                      headerTitle: "hidden",
-                      headerSubtitle: "hidden",
-                      formButtonPrimary: "w-full bg-white hover:bg-gray-50 text-white font-semibold py-4 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 text-base sm:text-lg flex items-center justify-center space-x-3 hover:shadow-xl [&>*]:text-white [&>span]:text-white [&>div]:text-white",
-                      formFieldInput: "bg-[#262626] border-gray-700 text-white placeholder-gray-400 rounded-xl py-3 sm:py-4 px-4 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200",
-                      formFieldLabel: "text-gray-300 font-medium text-sm sm:text-base",
-                      footerActionLink: "text-green-400 hover:text-green-300 font-semibold transition-colors duration-200 text-sm sm:text-base",
-                      dividerLine: "bg-gray-700",
-                      dividerText: "text-gray-400 text-sm sm:text-base",
-                      formField: "mb-4 sm:mb-6",
-                      footer: "mt-6 sm:mt-8 text-center",
-                      formButton: "w-full",
-                      form: "space-y-4 w-full"
-                    },
-                    variables: {
-                      colorPrimary: "#10b981",
-                      colorBackground: "#1f1f1f",
-                      colorInputBackground: "#262626",
-                      colorInputText: "#ffffff",
-                      colorText: "#ffffff",
-                      colorTextSecondary: "#9ca3af",
-                      colorTextOnPrimaryBackground: "#ffffff",
-                      colorNeutral: "#374151",
-                      colorInputForeground: "#ffffff",
-                      colorSuccess: "#10b981",
-                      colorForeground: "#ffffff",
-                      colorDanger: "#ef4444",
-                      borderRadius: "0.75rem"
-                    }
-                  }}
-                />
+              <div className="space-y-3">
+                <button
+                  onClick={() => router.push('/sign-in')}
+                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 sm:py-4 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200 border-0 text-base sm:text-lg"
+                >
+                  Sign In
+                </button>
+                
+                <button
+                  onClick={() => router.push('/sign-up')}
+                  className="w-full bg-transparent border-2 border-gray-600 hover:border-green-500 text-white font-semibold py-3 sm:py-4 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 text-base sm:text-lg"
+                >
+                  Create Account
+                </button>
               </div>
               
               <div className="mt-4 sm:mt-6 text-center">
